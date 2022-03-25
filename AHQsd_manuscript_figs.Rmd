@@ -1,0 +1,71 @@
+---
+title: "AHQsd_paper_figs"
+author: "Colette Berg"
+date: "3/25/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(dplyr)
+library(magrittr) 
+library(tidyverse)
+library(reshape2)
+library(tidyr)
+library(gridExtra)
+```
+
+## Experiment 1: growout of inbred lines under 13- 14- and 15- hour days
+
+```{r Exp1, echo=FALSE}
+
+FT <- read.csv("FTdata_merged.csv")
+FT1 <- group_by(filter(FT, Light > 12 & Light < 15 & Letter == "D"), Light, Line, Site_habitat, probFlower)
+
+A <- ggplot(filter(FT1, Site_habitat=="A"), aes(x=as.factor(Light),fill=canFlower)) + 
+  geom_bar(position="fill") +
+  scale_fill_manual(values=c("darkgreen","lightgreen","yellow")) + 
+  theme_bw() + 
+  ylab(element_blank()) + 
+  ggtitle("Annuals") + 
+  theme(legend.position="none",
+        panel.grid.major = element_blank(),
+        panel.border = element_blank(),
+        axis.line.x = element_line(colour = "black"), 
+        axis.line.y = element_line(colour = "black"),
+        axis.text.x = element_text(size=16),
+        axis.text.y = element_text(size=12),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_blank())
+
+P <- ggplot(filter(FT1, Site_habitat=="P"), aes(x=as.factor(Light),fill=canFlower)) + 
+  geom_bar(position="fill") +
+  scale_fill_manual(values=c("darkgreen","lightgreen","yellow")) + 
+  theme_bw() + 
+  ylab(element_blank()) + 
+  ggtitle("Perennials") + 
+  theme(legend.position="none", 
+        panel.grid.major = element_blank(), 
+        panel.border = element_blank(), 
+        panel.grid.minor = element_blank(),
+        axis.line.x = element_line(colour = "black"), 
+        axis.text.x = element_text(size=16),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x = element_blank())
+
+grid.arrange(A, P, nrow=1, bottom = "Daylength (Hours)")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
