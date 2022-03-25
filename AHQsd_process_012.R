@@ -11,9 +11,6 @@ library(reshape2)
 library(stringr)
 library(ggplot2)
 library(expss)
-install.packages("expss")
-#set working directory 
-setwd("~/")
 
 # read in chromosome files
 chr1 <- read.delim("~/Documents/UMontana/Research/YNP/AHQsd/AHQsd_chr1.012", sep="\t", header = FALSE)
@@ -99,7 +96,7 @@ colnames(pos14) <- "pos"
 
 
 ## combine the pos files
-all_pos <- rbind(pos1,  pos3, pos4, pos5, pos6, pos7, pos8, pos9, pos10, pos11, pos12, pos13, pos14)
+all_pos <- rbind(pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9, pos10, pos11, pos12, pos13, pos14)
 dim(all_pos)
 
 ## read in the individual file. only one is needed here
@@ -110,15 +107,17 @@ indv <- read.csv("~/Documents/UMontana/Research/YNP/AHQsd/AHQsd_chr1.012.indv", 
 
 indv <- select(indv, V1)
 
+head(indv)
+
 ## name the column
 colnames(indv) <- "ind"
-
+indv
 ## combine the chromosomes 
 
-all_chr <- cbind(chr1, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14)
 
+all_chr <- cbind(chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14)
+rownames(all_chr) = indv$ind
+colnames(all_chr) = all_pos$pos
 ## write the .csv
 write.csv(all_chr, "AHQsd_F2_genotypes_raw.csv")
-
-
-
+dim(all_chr)
