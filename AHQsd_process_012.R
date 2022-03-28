@@ -11,6 +11,7 @@ library(reshape2)
 library(stringr)
 library(ggplot2)
 library(expss)
+library(arrow)
 
 # read in chromosome files
 chr1 <- read.delim("~/Documents/UMontana/Research/YNP/AHQsd/AHQsd_chr1.012", sep="\t", header = FALSE)
@@ -106,18 +107,15 @@ indv <- read.csv("~/Documents/UMontana/Research/YNP/AHQsd/AHQsd_chr1.012.indv", 
 ## format the position file 
 
 indv <- select(indv, V1)
-
-head(indv)
-
 ## name the column
 colnames(indv) <- "ind"
-indv
 ## combine the chromosomes 
 
 
 all_chr <- cbind(chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14)
 rownames(all_chr) = indv$ind
 colnames(all_chr) = all_pos$pos
+
+rownames(all_chr) 
 ## write the .csv
-write.csv(all_chr, "AHQsd_F2_genotypes_raw.csv")
-dim(all_chr)
+write_csv(all_chr, "AHQsd_F2_genotypes_raw.csv")
